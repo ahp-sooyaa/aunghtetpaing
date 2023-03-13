@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
-import tailwindTypography from '@tailwindcss/typography'
+import tailwindTypography from "@tailwindcss/typography";
+import tailwindAspectRatio from "@tailwindcss/aspect-ratio";
 
 module.exports = {
   content: [
@@ -8,22 +9,23 @@ module.exports = {
     "./pages/**/*.vue",
     "./plugins/**/*.{js,ts}",
     "./nuxt.config.{js,ts}",
-    "./app.vue"
-  ],  
+    "./app.vue",
+  ],
   theme: {
     extend: {
       keyframes: {
         marquee: {
-          '0%': { backgroundPosition: '0' },
-          '100%': { backgroundPosition: '-1600px' },
-        }
+          "0%": { backgroundPosition: "0" },
+          "100%": { backgroundPosition: "-1600px" },
+        },
       },
       animation: {
-        marquee: 'marquee 30s ease-in-out infinite alternate'
-      }
-    }
+        marquee: "marquee 30s ease-in-out infinite alternate",
+      },
+    },
   },
-  plugins: [
-    tailwindTypography,
-  ],
-}
+  corePlugins: {
+    aspectRatio: false,
+  },
+  plugins: [tailwindTypography, tailwindAspectRatio],
+};
