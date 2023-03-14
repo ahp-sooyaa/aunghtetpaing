@@ -140,21 +140,19 @@
                 >
                     Experience
                 </h1>
-                <div class="pl-5 relative">
+                <div v-for="experience in experiences" class="pl-5 relative">
                     <div
                         class="bg-gradient-to-b from-transparent via-[#FF6C00] to-transparent h-full w-[1px] absolute left-0"
                     />
                     <div class="not-prose text-sm text-gray-500">
-                        Jan 2023 - present
+                        {{ experience.start_date }} - {{ experience.end_date }}
                     </div>
                     <div>
                         <h2 class="mt-0 mb-3">
-                            Junior Web Developer @ Myintthukanandi
+                            {{ experience.position }} @ {{ experience.company }}
                         </h2>
                         <p class="max-w-3xl">
-                            Worked closely with senior and took part in
-                            developing ecommerce built with laravel, livewire
-                            and wordpress sites.
+                            {{ experience.description }}
                         </p>
                     </div>
                 </div>
@@ -176,96 +174,27 @@
                     Projects
                 </h1>
                 <div class="grid sm:grid-cols-2 xl:grid-cols-3 gap-5">
-                    <!-- currently all the data are hard coded -->
-                    <div>
+                    <div v-for="project in projects">
                         <a
-                            href="https://github.com/ahp-sooyaa/real-time-chat-app"
+                            :href="project.link"
                             class="block mt-0 mb-5 shadow-lg aspect-w-2 aspect-h-1 hover:scale-105 transition ease-in-out duration-300"
                         >
                             <img
-                                src="/img/koob.png"
-                                alt="koob"
+                                :src="project.imageUrl"
+                                :alt="'image of ' + project.name + 'project'"
                                 class="w-full h-full m-0 rounded-lg"
                                 width="1810"
                                 height="905"
                             />
                         </a>
                         <div class="text-sm text-gray-500">
-                            book ecommerce site
+                            {{ project.description }}
                         </div>
                         <a
-                            href="https://github.com/ahp-sooyaa/real-time-chat-app"
+                            :href="project.link"
                             class="m-0 no-underline hover:underline"
                         >
-                            Koob
-                        </a>
-                    </div>
-                    <div>
-                        <div
-                            class="mt-0 mb-5 shadow-lg aspect-w-2 aspect-h-1 hover:scale-105 transition ease-in-out duration-300"
-                        >
-                            <img
-                                src="/img/chat.png"
-                                alt="koob"
-                                class="w-full h-full m-0 rounded-lg"
-                                width="1810"
-                                height="905"
-                            />
-                        </div>
-                        <div class="text-sm text-gray-500">
-                            real time chat app
-                        </div>
-                        <a
-                            href="https://github.com/ahp-sooyaa/real-time-chat-app"
-                            class="m-0 no-underline hover:underline"
-                        >
-                            Chat
-                        </a>
-                    </div>
-                    <div>
-                        <a
-                            href="https://ahp-sooyaa.github.io/rock-paper-scissors-game/"
-                            class="block mt-0 mb-5 shadow-lg aspect-w-2 aspect-h-1 hover:scale-105 transition ease-in-out duration-300"
-                        >
-                            <img
-                                src="/img/rock-paper-scissors.png"
-                                alt="koob"
-                                class="w-full h-full m-0 rounded-lg"
-                                width="1810"
-                                height="905"
-                            />
-                        </a>
-                        <div class="text-sm text-gray-500">
-                            frontend mentor challenge
-                        </div>
-                        <a
-                            href="https://ahp-sooyaa.github.io/rock-paper-scissors-game/"
-                            class="m-0 no-underline hover:underline"
-                        >
-                            rock paper scissors game
-                        </a>
-                    </div>
-                    <div>
-                        <a
-                            href="https://ahp-sooyaa.github.io/space-tourism-website/"
-                            class="block mt-0 mb-5 shadow-lg aspect-w-2 aspect-h-1 hover:scale-105 transition ease-in-out duration-300"
-                        >
-                            <img
-                                src="/img/space-tourism.png"
-                                alt="koob"
-                                class="w-full h-full m-0 rounded-lg"
-                                width="1810"
-                                height="905"
-                            />
-                        </a>
-                        <div class="text-sm text-gray-500">
-                            frontend mentor challenge
-                        </div>
-                        <a
-                            href="https://ahp-sooyaa.github.io/space-tourism-website/"
-                            class="m-0 no-underline hover:underline"
-                        >
-                            space tourism website
+                            {{ project.name }}
                         </a>
                     </div>
                 </div>
@@ -285,36 +214,17 @@
     </div>
 </template>
 
-<script setup lang="ts">
-useHead({
-    title: 'Aung Htet Paing',
+<script setup>
 
-    meta: [
-        { name: 'description', content: 'My Portfolio Site' },
-        { property: 'og:title', content: 'Aung Htet Paing' },
-        { property: 'og:image', content: '/img/koob.png' },
-        { property: 'og:description', content: 'My Portfolio Site' },
-        { property: 'og:url', content: '//aunghtetpaing.netlify.app/' },
-    ],
+const experienceQuery = groq`*[_type == "experience"]`
+const { data: experiences } = useSanityQuery(experienceQuery)
 
-    link: [
-        {
-            rel: 'apple-touch-icon',
-            sizes: '180x180',
-            href: '/favicons/apple-touch-icon.png',
-        },
-        {
-            rel: 'icon',
-            type: 'image/png',
-            sizes: '32x32',
-            href: '/favicons/favicon-32x32.png',
-        },
-        {
-            rel: 'icon',
-            type: 'image/png',
-            sizes: '64x64',
-            href: '/favicons/favicon-64x64.png',
-        },
-    ],
-});
+const projectQuery = groq`*[_type == "project"]{
+    name,
+    description,
+    'imageUrl': featured_image.asset->url,
+    link,
+} | order(_createdAt asc)`
+const { data: projects } = useSanityQuery(projectQuery)
+
 </script>
