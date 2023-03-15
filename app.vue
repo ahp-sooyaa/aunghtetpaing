@@ -1,3 +1,14 @@
+<script setup>
+const query = groq`
+    {
+        'projects': *[_type == 'project'] | order(_createdAt asc), 
+        'experiences': *[_type == 'experience'], 
+        'hero': *[_type == 'hero_section'][0]
+    }
+`;
+const { data } = useSanityQuery(query);
+</script>
+
 <template>
     <div class="bg-[#010101]">
         <div
@@ -19,12 +30,10 @@
                             );
                         "
                     >
-                        Aung Htet Paing
+                        {{ data.hero.heading }}
                     </h1>
                     <p>
-                        Hey, I'm a electronic major student who is interesting
-                        in web development. I enjoy watching screen cast from
-                        Laracasts, learning new things.
+                        {{ data.hero.body }}
                     </p>
                     <div class="not-prose flex space-x-5">
                         <a href="https://www.twitter.com/aunghte23771311">
@@ -55,10 +64,18 @@
                         </a>
                     </div>
                 </article>
-                <img
-                    src="/img/river-fx-MqsqeQ54yFo-unsplash.png"
-                    alt="light bulb"
-                />
+                <SanityImage
+                    :asset-id="data.hero.hero_image.asset._ref"
+                    auto="format"
+                    fm="webp"
+                >
+                    <template #default="{ src }">
+                        <img
+                            :src="src"
+                            alt="light bulb"
+                        />
+                    </template>
+                </SanityImage>
             </div>
             <div class="mt-10">
                 <div class="text-sm text-gray-500">My tools belt</div>
@@ -140,7 +157,10 @@
                 >
                     Experience
                 </h1>
-                <div v-for="experience in experiences" class="pl-5 relative">
+                <div
+                    v-for="experience in data.experiences"
+                    class="pl-5 relative"
+                >
                     <div
                         class="bg-gradient-to-b from-transparent via-[#FF6C00] to-transparent h-full w-[1px] absolute left-0"
                     />
@@ -174,18 +194,30 @@
                     Projects
                 </h1>
                 <div class="grid sm:grid-cols-2 xl:grid-cols-3 gap-5">
-                    <div v-for="project in projects">
+                    <div v-for="project in data.projects">
                         <a
                             :href="project.link"
                             class="block mt-0 mb-5 shadow-lg aspect-w-2 aspect-h-1 hover:scale-105 transition ease-in-out duration-300"
                         >
-                            <img
-                                :src="project.imageUrl"
-                                :alt="'image of ' + project.name + 'project'"
-                                class="w-full h-full m-0 rounded-lg"
-                                width="1810"
-                                height="905"
-                            />
+                            <SanityImage
+                                :asset-id="project.featured_image.asset._ref"
+                                auto="format"
+                                fm="webp"
+                            >
+                                <template #default="{ src }">
+                                    <img
+                                        :src="src"
+                                        :alt="
+                                            'image of ' +
+                                            project.name +
+                                            'project'
+                                        "
+                                        class="w-full h-full m-0 rounded-lg"
+                                        width="1810"
+                                        height="905"
+                                    />
+                                </template>
+                            </SanityImage>
                         </a>
                         <div class="text-sm text-gray-500">
                             {{ project.description }}
@@ -213,18 +245,3 @@
         </footer>
     </div>
 </template>
-
-<script setup>
-
-const experienceQuery = groq`*[_type == "experience"]`
-const { data: experiences } = useSanityQuery(experienceQuery)
-
-const projectQuery = groq`*[_type == "project"]{
-    name,
-    description,
-    'imageUrl': featured_image.asset->url,
-    link,
-} | order(_createdAt asc)`
-const { data: projects } = useSanityQuery(projectQuery)
-
-</script>
