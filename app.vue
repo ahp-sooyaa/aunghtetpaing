@@ -12,7 +12,7 @@ const { data } = useSanityQuery(query);
 <template>
     <div class="bg-[#010101]">
         <div
-            class="relative min-h-screen max-w-5xl mx-auto grid place-content-center px-4 lg:px-8 mb-32"
+            class="relative min-h-screen max-w-5xl mx-auto grid place-content-center px-4 lg:px-8 mb-32 md:mb-0"
         >
             <div
                 class="bg-[#EC921F] w-24 h-24 blur-3xl absolute top-0 left-0"
@@ -233,10 +233,9 @@ const { data } = useSanityQuery(query);
             </div>
         </section>
 
-        <footer class="relative h-72 text-center flex items-end justify-center">
-            <div
-                class="absolute inset-0 bg-gradient-to-b from-black to-transparent"
-            />
+        <footer
+            class="animate-marquee relative bg-[url('/img/scattered-forcefields.svg')] h-72 text-center flex items-end justify-center"
+        >
             <p class="mb-10 text-gray-200">
                 &copy; 2023 AungHtetPaing. All rights reserved.
             </p>
