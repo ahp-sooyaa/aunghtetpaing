@@ -234,7 +234,7 @@ const { data } = useSanityQuery(query);
         </section>
 
         <footer
-            class="animate-marquee relative bg-[url('/img/scattered-forcefields.svg')] h-72 text-center flex items-end justify-center"
+            class="animate-marquee relative bg-[url('/img/scattered-forcefields.svg')] h-52 lg:h-72 text-center flex items-end justify-center"
         >
             <p class="mb-10 text-gray-200">
                 &copy; 2023 AungHtetPaing. All rights reserved.
