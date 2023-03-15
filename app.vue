@@ -233,9 +233,7 @@ const { data } = useSanityQuery(query);
             </div>
         </section>
 
-        <footer
-            class="animate-marquee relative bg-[url('/img/scattered-forcefields.svg')] h-72 text-center flex items-end justify-center"
-        >
+        <footer class="relative h-72 text-center flex items-end justify-center">
             <div
                 class="absolute inset-0 bg-gradient-to-b from-black to-transparent"
             />
